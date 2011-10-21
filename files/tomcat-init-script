@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# This is the init script for starting up the
+# Jakarta Tomcat server
+#
+# Jeff McCune <jeff@puppetlabs.com>
+# 2010-08-05
+#
+# chkconfig: 345 91 10
+# description: Starts and stops the Tomcat daemon.
+#
+# THIS SCRIPT RUNS TOMCAT AS ROOT - BE AWARE
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Get config.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+# JJM Export this to get the pid.
+export CATALINA_PID=/var/run/tomcat.pid
+
+# Here I installed Tomcat 5
+tomcat=/usr/tomcat
+startup=$tomcat/bin/startup.sh
+shutdown=$tomcat/bin/shutdown.sh
+
+export JAVA_HOME=/usr/java/default
+
+start(){
+ echo -n $"Starting Tomcat service: "
+ #daemon -c
+ $startup
+ RETVAL=$?
+ echo
+}
+
+stop(){
+ action $"Stopping Tomcat service: " $shutdown
+ RETVAL=$?
+ echo
+}
+
+restart(){
+  stop
+  start
+}
+
+
+# See how we were called.
+case "$1" in
+start)
+ start
+ ;;
+stop)
+ stop
+ ;;
+status)
+ status -p ${CATALINA_PID}
+ RETVAL=$?
+ ;;
+restart)
+ restart
+ ;;
+*)
+ echo $"Usage: $0 {start|stop|status|restart}"
+ exit 1
+esac
+
+exit $RETVAL

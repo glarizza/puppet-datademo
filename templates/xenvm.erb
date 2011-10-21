@@ -1,0 +1,12 @@
+# Puppet Managed Virtual Machine
+name = "<%= vm_name_real %>"
+uuid = "<%= vm_uuid %>"
+maxmem = <%= vm_memory %>
+memory = <%= vm_memory %>
+vcpus = 2
+bootloader = "/usr/bin/pygrub"
+on_poweroff = "destroy"
+on_reboot = "restart"
+on_crash = "restart"
+disk = [ "phy:<%= vm_disk_real %>,xvda,w" ]
+vif = [ "mac=<%= vm_mac %>,bridge=xenbr0,script=vif-bridge" ]

@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+
+sleep 3
+
+while ! /usr/sbin/lsof -n -i :8080
+do
+  /etc/init.d/tomcat stop
+  sleep 1
+  /etc/init.d/tomcat start
+  sleep 5
+done
+
