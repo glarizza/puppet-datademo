@@ -42,5 +42,5 @@ class yum::hiera (
 
   $yumrepos = hiera_include('yumrepos')
   # epel repos
-  create_resource ('yum::repo', $yumrepos)
+  create_resources ('yum::repo', $yumrepos)
 }

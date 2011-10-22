@@ -8,21 +8,21 @@ yumrepos:
   rpmforge: 
     mirrorlist: http://apt.sw.be/redhat/el5/en/mirrors-rpmforge
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
-    protect: 0
+    protect: '0'
     reponame: RHEL $releasever - RPMforge.net - dag
     baseurl: http://apt.sw.be/redhat/el5/en/$basearch/rpmforge
   rpmforge-extras: 
     mirrorlist: http://apt.sw.be/redhat/el5/en/mirrors-rpmforge-extras
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
-    enabled: 0
-    protect: 0
+    enabled: '0'
+    protect: '0'
     reponame: RHEL $releasever - RPMforge.net - extras
     baseurl: http://apt.sw.be/redhat/el5/en/$basearch/extras
   rpmforge-testing: 
     mirrorlist: http://apt.sw.be/redhat/el5/en/mirrors-rpmforge-testing
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
-    enabled: 0
-    protect: 0
+    enabled: '0'
+    protect: '0'
     reponame: RHEL $releasever - RPMforge.net - testing
     baseurl: http://apt.sw.be/redhat/el5/en/$basearch/testing
   epel: 
