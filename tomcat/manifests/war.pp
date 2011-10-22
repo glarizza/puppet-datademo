@@ -42,28 +42,10 @@ define tomcat::war(
     command     => "unzip ${tomcat_stage_dir}/war/${name}.war -d ${tomcat_target_dir}/apps/${name}",
     path        => '/bin:/usr/bin',
     refresh     => "rm -Rf ${tomcat_target_dir}/apps/${name} && unzip ${tomcat_stage_dir}/war/${name}.war -d ${tomcat_target_dir}/apps/${name}",
-    require     => File["${tomcat_target_dir}/apps"],
+    require     => [File["${tomcat_target_dir}/apps"], Exec['stop_tomcat']],
     subscribe   => File["${tomcat_stage_dir}/war/${name}.war"],
     refreshonly => true,
     notify      => Exec['start_tomcat'],
-  }
-
-  file { '/usr/bin/stop_tomcat':
-    ensure => present,
-    mode   => '0755',
-    source => 'puppet:///modules/tomcat/stop_tomcat.sh',
-  }
-
-  exec { 'stop_tomcat':
-    command     => '/usr/bin/stop_tomcat',
-    refreshonly => true,
-    require     => File['/usr/bin/stop_tomcat'],
-    before      => Exec["extract_${name}"],
-  }
-
-  exec { 'start_tomcat':
-    command     => '/etc/init.d/tomcat start',
-    refreshonly => true,
   }
 
   file { "${tomcat_target_dir}/apps/${name}":

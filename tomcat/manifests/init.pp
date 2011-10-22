@@ -83,4 +83,22 @@ class tomcat(
     refreshonly => true,
     subscribe   => File['/opt/tomcat'],
   }
+
+  file { "/usr/bin/stop_tomcat":
+    ensure => present,
+    mode   => '0755',
+    source => 'puppet:///modules/tomcat/stop_tomcat.sh',
+  }
+
+  exec { 'stop_tomcat':
+    command     => '/usr/bin/stop_tomcat',
+    refreshonly => true,
+    require     => File['/usr/bin/stop_tomcat'],
+  }
+
+  exec { 'start_tomcat':
+    command     => '/etc/init.d/tomcat start',
+    refreshonly => true,
+  }
+
 }
