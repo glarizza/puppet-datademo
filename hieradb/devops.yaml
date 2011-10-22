@@ -1,0 +1,8 @@
+---
+jenkins_version   : '1.419'
+tomcat_version    : '5.5.30'
+jdk_installer     : "jdk-6u21-linux-%{architecture_real}-rpm.bin"
+jenkins_installer : "jenkins-%{jenkins_version}.war"
+tomcat_installer  : "apache-tomcat-%{tomcat_version}.tar.gz"
+tomcat_stage_dir  : '/opt/tomcat'
+filename          : %{jenkins_installer}

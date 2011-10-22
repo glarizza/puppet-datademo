@@ -1,0 +1,15 @@
+---
+tomcat_instance:
+  myhsrv1:
+    war:
+      jenkins1:
+        filename: 'jenkins_1.425.war'
+      snoop-servlet:
+        filename: 'snoop-servlet_1.0.war'
+  myhsrv2:
+    war:
+      jenkins2:
+        filename: 'jenkins_1.425.war'
+server_xml:
+  port: 16
+  env: 'poc'

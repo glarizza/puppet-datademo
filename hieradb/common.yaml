@@ -1,0 +1,6 @@
+---
+jenkins_version   : '1.000'
+tomcat_version    : '1.000'
+architecture_real : 'x64'
+tomcat_target_dir : '/usr/tomcat/webapps'
+war_source        : 'puppet:///modules/tomcat/war'

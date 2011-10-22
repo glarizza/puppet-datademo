@@ -1,0 +1,11 @@
+---
+:backends: - yaml
+           - puppet
+:hierarchy: - %{clientcert}
+            - %{environment}
+            - %{architecture}
+            - common
+:yaml:
+        :datadir: /etc/puppetlabs/puppet/hieradb
+:puppet:
+        :datasource: data
