@@ -1,30 +1,19 @@
-# Define: yum::repo
-#
-#   yum repo.
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
 define yum::repo(
   $reponame,
-  $baseurl        = '',
-  $mirrorlist     = '',
-  $failovermethod = priority,
-  $enabled        = 1,
-  $protect        = '',
-  $gpgcheck       = 1,
-  $gpgkey         = '',
-  $directory      = '/etc/yum.repos.d'
+  $baseurl        = $yum::params::baseurl,
+  $mirrorlist     = $yum::params::mirrorlist,
+  $failovermethod = $yum::params::failovermethod,
+  $enabled        = $yum::params::enabled,
+  $protect        = $yum::params::protect,
+  $gpgcheck       = $yum::params::gpgcheck,
+  $gpgkey         = $yum::params::gpgkey,
+  $repo_directory = $yum::params::repo_directory
 ) {
-  file { "${directory}/${name}.repo":
+  file { "${repo_directory}/${name}.repo":
     owner   => '0',
     group   => '0',
     mode    => '0644',
     content => template('yum/repo.erb'),
+    notify  => Exec['refresh_cache'],
   }
 }
