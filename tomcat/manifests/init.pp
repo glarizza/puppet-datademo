@@ -36,50 +36,52 @@ class tomcat(
 
   # Resource defaults.
   File {
-    owner => "0",
-    group => "0",
-    mode  => "0644",
+    owner => '0',
+    group => '0',
+    mode  => '0644',
   }
 
   Exec {
-    path => "/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
+    path => '/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
   }
 
   file { "/var/tmp/${tomcat_installer}":
     source  => "puppet:///modules/tomcat/${tomcat_installer}",
   }
 
-  exec { "unpack-tomcat":
+  exec { 'unpack-tomcat':
     command => "tar -C /usr -x -z -f /var/tmp/${tomcat_installer}",
     creates => "/usr/apache-tomcat-${tomcat_version}",
     require => File["/var/tmp/${tomcat_installer}"],
   }
 
-  file { 
-    "/usr/tomcat":
-      ensure  => symlink,
-      target  => "/usr/apache-tomcat-${tomcat_version}",
-      require => Exec["unpack-tomcat"];
-    "/etc/init.d/tomcat":
-      mode    => "0755",
-      source  => "puppet:///modules/tomcat/tomcat-init-script",
-      require => File["/usr/tomcat"];
-    "/opt/tomcat":
-      ensure       => directory,
-      mode         => '0755',
-      purge        => true,
-      recurse      => true,
-      force        => true,
-      recurselimit => 3,
-      backup       => false,
-      notify       => Exec["tomcat_restart"];
+  file { '/usr/tomcat':
+    ensure  => symlink,
+    target  => "/usr/apache-tomcat-${tomcat_version}",
+    require => Exec["unpack-tomcat"],
+  }
+
+  file { '/etc/init.d/tomcat':
+    mode    => '0755',
+    source  => 'puppet:///modules/tomcat/tomcat-init-script',
+    require => File['/usr/tomcat'],
+  }
+
+  file { '/opt/tomcat':
+    ensure       => directory,
+    purge        => true,
+    recurse      => true,
+    force        => true,
+    recurselimit => 3,
+    backup       => false,
   }
 
   exec { 'tomcat_restart':
     command     => '/etc/init.d/tomcat stop && sleep 3 && /etc/init.d/tomcat start',
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
-    refreshonly => true,
     logoutput   => true,
+    refreshonly => true,
+    subscribe   => File['/opt/tomcat'],
   }
 
   file { "/usr/bin/stop_tomcat":

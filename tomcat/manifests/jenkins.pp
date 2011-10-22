@@ -10,9 +10,9 @@ class tomcat::jenkins(
 ) inherits tomcat::params {
 
   File {
-    owner => "0",
-    group => "0",
-    mode  => "0644",
+    owner => '0',
+    group => '0',
+    mode  => '0644',
   }
 
   if $ensure == 'absent' {
@@ -26,7 +26,7 @@ class tomcat::jenkins(
     exec {'stop-tomcat-jenkins':
       command => '/usr/bin/stop_tomcat.sh',
       onlyif  => '/bin/ls /usr/tomcat/webapps/jenkins.war',
-      before  => [ File['/usr/tomcat/webapps/jenkins.war'], File['/usr/tomcat/webapps/jenkins'] ],
+      before  => File['/usr/tomcat/webapps/jenkins.war', '/usr/tomcat/webapps/jenkins'],
       require => File['/usr/bin/stop_tomcat.sh'],
     }
 
@@ -34,7 +34,7 @@ class tomcat::jenkins(
       source => 'puppet:///modules/tomcat/stop_tomcat.sh',
       mode   => '0755',
     }
-  } 
+  }
 
   file { "/usr/tomcat/webapps/jenkins.war":
     ensure  => $ensure ? {
