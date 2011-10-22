@@ -4,28 +4,28 @@ tomcat_version    : '1.000'
 architecture_real : 'x64'
 tomcat_target_dir : '/usr/tomcat/webapps'
 war_source        : 'puppet:///modules/tomcat/war'
-yumrepo:
-  rpmforge:
+yumrepos: 
+  rpmforge: 
     mirrorlist: http://apt.sw.be/redhat/el5/en/mirrors-rpmforge
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
     protect: 0
     reponame: RHEL $releasever - RPMforge.net - dag
     baseurl: http://apt.sw.be/redhat/el5/en/$basearch/rpmforge
-  rpmforge-extras:
+  rpmforge-extras: 
     mirrorlist: http://apt.sw.be/redhat/el5/en/mirrors-rpmforge-extras
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
     enabled: 0
     protect: 0
     reponame: RHEL $releasever - RPMforge.net - extras
     baseurl: http://apt.sw.be/redhat/el5/en/$basearch/extras
-  rpmforge-testing:
+  rpmforge-testing: 
     mirrorlist: http://apt.sw.be/redhat/el5/en/mirrors-rpmforge-testing
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
     enabled: 0
     protect: 0
     reponame: RHEL $releasever - RPMforge.net - testing
     baseurl: http://apt.sw.be/redhat/el5/en/$basearch/testing
-  epel:
+  epel: 
     mirrorlist: http://mirrors.fedoraproject.org/mirrorlist?repo=epel-5&arch=$basearch
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL
     reponame: Extra Packages for Enterprise Linux 5 - $basearch
