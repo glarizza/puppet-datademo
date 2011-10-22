@@ -10,4 +10,4 @@ This is the code I used in the 10/22/2011 demo for Camp Devops in Chicago. Feel 
       include yum
     }
 
-Also, make sure to download the correct versions of the sunjdk and jenkins (see code).  All war files should be in modules/tomcat/files/war and your sunjdk files should be in modules/tomcat/files
+Also, make sure to download the correct versions of the sunjdk, tomcat, and jenkins (see code).  All war files should be in modules/tomcat/files/war and your sunjdk and tomcat files should be in modules/tomcat/files
