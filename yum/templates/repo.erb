@@ -1,0 +1,23 @@
+# Managed by Puppet
+[<%= name %>]
+<% if reponame && reponame != '' -%>
+name = <%= reponame %>
+<% end -%>
+<% if baseurl && baseurl != '' -%>
+baseurl = <%= baseurl %>
+<% end -%>
+<% if mirrorlist && mirrorlist != ''-%>
+mirrorlist = <%= mirrorlist %>
+<% end -%>
+<% if enabled && enabled != ''-%>
+enabled = <%= enabled %>
+<% end -%>
+<% if protect && protect != ''-%>
+protect = <%= protect %>
+<% end -%>
+<% if gpgcheck && gpgcheck != '' -%>
+gpgcheck = <%= gpgcheck %>
+<% end -%>
+<% if gpgkey && gpgkey != '' -%>
+gpgkey = <%= gpgkey %>
+<% end -%>
