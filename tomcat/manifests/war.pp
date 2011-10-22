@@ -18,7 +18,7 @@ define tomcat::war(
   }
 
   if !defined(File[$tomcat_target_dir]) {
-    file { "${tomcat_target_dir}":
+    file { $tomcat_target_dir:
       ensure => directory,
     }
 
@@ -48,7 +48,7 @@ define tomcat::war(
     notify      => Exec['start_tomcat'],
   }
 
-  file { "/usr/bin/stop_tomcat":
+  file { '/usr/bin/stop_tomcat':
     ensure => present,
     mode   => '0755',
     source => 'puppet:///modules/tomcat/stop_tomcat.sh',
@@ -73,7 +73,7 @@ define tomcat::war(
 
   file { "${tomcat_target_dir}/${name}":
     ensure   => symlink,
-    target   => "${tomcat_target_dir}/apps/${name}", 
+    target   => "${tomcat_target_dir}/apps/${name}",
     #require => Exec["extract_${name}"],
     require  => File["${tomcat_target_dir}/apps/${name}"],
   }

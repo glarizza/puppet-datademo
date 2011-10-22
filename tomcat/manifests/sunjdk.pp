@@ -11,30 +11,30 @@ class tomcat::sunjdk(
 ) inherits tomcat::params {
 
 	File {
-    owner => "0",
-    group => "0",
-    mode  => "0644",
+    owner => '0',
+    group => '0',
+    mode  => '0644',
   }
 
   Exec {
-    path => "/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin",
+    path => '/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
   }
 
   file { "/var/tmp/${jdk_installer}":
-		mode   => "0755",
+		mode   => '0755',
 		source => "puppet:///modules/tomcat/${jdk_installer}",
-		notify => Exec["install-jdk"],
+		notify => Exec['install-jdk'],
   }
 
-  exec { "install-jdk":
+  exec { 'install-jdk':
     command => "/var/tmp/${jdk_installer} -noregister",
-    cwd     => "/var/tmp",
-    creates => "/usr/java",
+    cwd     => '/var/tmp',
+    creates => '/usr/java',
   }
 
-# Provide an anchor for resource relationships
-	file { "/usr/java":
-		require => Exec["install-jdk"],
-		ensure  => "directory";
+  # Provide an anchor for resource relationships
+	file { '/usr/java':
+		ensure  => directory,
+		require => Exec['install-jdk'],
 	}
 }
