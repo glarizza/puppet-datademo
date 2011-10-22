@@ -40,7 +40,7 @@ class yum::hiera (
     repo_directory => $repo_directory,
   }
 
-  $yumrepos = hiera_include('yumrepos')
+  $yumrepos = hiera_hash('yumrepos')
   # epel repos
   create_resources ('yum::repo', $yumrepos)
 }
