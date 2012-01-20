@@ -1,0 +1,8 @@
+---
+ensure            : 'present'
+war_installs      :
+  jenkins :
+    filename          : "jenkins-1.400.war"
+    war_source        : 'puppet:///modules/tomcat/war'
+    tomcat_stage_dir  : '/opt/tomcat'
+    tomcat_target_dir : '/usr/tomcat'
