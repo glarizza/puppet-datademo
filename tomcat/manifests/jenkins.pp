@@ -25,7 +25,7 @@ class tomcat::jenkins(
 
     exec {'stop-tomcat-jenkins':
       command => '/usr/bin/stop_tomcat.sh',
-      onlyif  => '/bin/ls /usr/tomcat/webapps/jenkins.war',
+      creates => '/usr/tomcat/webapps/jenkins.war',
       before  => File['/usr/tomcat/webapps/jenkins.war', '/usr/tomcat/webapps/jenkins'],
       require => File['/usr/bin/stop_tomcat.sh'],
     }
