@@ -5,58 +5,44 @@ define tomcat::war(
   $filename
 ) {
 
-  if !defined(File[$tomcat_stage_dir]) {
-    file { $tomcat_stage_dir:
-      ensure => directory,
-    }
+  file { "${tomcat_stage_dir}/war":
+    ensure => directory,
   }
 
-  if !defined(File["${tomcat_stage_dir}/war"]) {
-    file { "${tomcat_stage_dir}/war":
-      ensure => directory,
-    }
+  file { "${tomcat_target_dir}/apps":
+    ensure       => directory,
+    #purge        => true,
+    #force        => true,
+    #recurse      => true,
+    #recurselimit => 1,
+    backup       => false,
   }
 
-  if !defined(File[$tomcat_target_dir]) {
-    file { $tomcat_target_dir:
-      ensure => directory,
-    }
-
-    file { "${tomcat_target_dir}/apps":
-      ensure       => directory,
-      purge        => true,
-      force        => true,
-      recurse      => true,
-      recurselimit => 1,
-      backup       => false,
-    }
-  }
-
-  file { "${tomcat_stage_dir}/war/${name}.war":
-    source => "${war_source}/${filename}",
-    backup => false,
-    notify => Exec['stop_tomcat'],
+  file { "${tomcat_stage_dir}/war/${filename}":
+    source  => "${war_source}/${filename}",
+    backup  => false,
+    notify  => Service['tomcat'],
   }
 
   exec { "extract_${name}":
-    command     => "unzip ${tomcat_stage_dir}/war/${name}.war -d ${tomcat_target_dir}/apps/${name}",
+    command     => "unzip ${tomcat_stage_dir}/war/${filename} -d ${tomcat_target_dir}/apps/${filename}",
     path        => '/bin:/usr/bin',
-    refresh     => "rm -Rf ${tomcat_target_dir}/apps/${name} && unzip ${tomcat_stage_dir}/war/${name}.war -d ${tomcat_target_dir}/apps/${name}",
-    require     => [File["${tomcat_target_dir}/apps"], Exec['stop_tomcat']],
-    subscribe   => File["${tomcat_stage_dir}/war/${name}.war"],
+    refresh     => "rm -Rf ${tomcat_target_dir}/apps/${filename} && unzip ${tomcat_stage_dir}/war/${filename} -d ${tomcat_target_dir}/apps/${filename}",
+    require     => File["${tomcat_target_dir}/apps"],
+    subscribe   => File["${tomcat_stage_dir}/war/${filename}"],
     refreshonly => true,
-    notify      => Exec['start_tomcat'],
+    notify      => Service['tomcat'],
   }
 
-  file { "${tomcat_target_dir}/apps/${name}":
-    ensure  => directory,
-    require => Exec["extract_${name}"],
+  file { "${tomcat_target_dir}/apps/${filename}":
+    ensure => directory,
   }
 
-  file { "${tomcat_target_dir}/${name}":
-    ensure   => symlink,
-    target   => "${tomcat_target_dir}/apps/${name}",
-    #require => Exec["extract_${name}"],
-    require  => File["${tomcat_target_dir}/apps/${name}"],
+  file { "${tomcat_target_dir}/webapps/${name}":
+    ensure  => symlink,
+    target  => "${tomcat_target_dir}/apps/${filename}",
+    require => File["${tomcat_target_dir}/apps/${filename}"],
+    notify  => Service['tomcat'],
   }
 }
+

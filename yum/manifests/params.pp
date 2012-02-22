@@ -1,10 +1,10 @@
 class yum::params {
-  $repo_directory = '/etc/yum.repos.d'
-  $baseurl        = ''
-  $mirrorlist     = ''
-  $failovermethod = priority
-  $enabled        = 1
-  $protect        = ''
-  $gpgcheck       = 1
-  $gpgkey         = ''
+  $repo_directory = hiera('repo_directory', nil)
+  $baseurl        = hiera('baseurl', nil)
+  $mirrorlist     = hiera('mirrorlist', nil)
+  $failovermethod = hiera('failovermethod', nil)
+  $enabled        = hiera('enabled', nil)
+  $protect        = hiera('protect', nil)
+  $gpgcheck       = hiera('gpgcheck', nil)
+  $gpgkey         = hiera('gpgkey', nil)
 }

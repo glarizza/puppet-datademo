@@ -36,7 +36,11 @@ class tomcat::jenkins(
     }
   }
 
-  file { "/usr/tomcat/webapps/jenkins.war":
+  file { '/usr/tomcat/webapps/warfiles':
+    ensure => directory,
+  }
+
+  file { "/usr/tomcat/webapps/warfiles/${jenkins_installer}":
     ensure  => $ensure ? {
       'absent' => absent,
       default  => present,
@@ -47,4 +51,5 @@ class tomcat::jenkins(
     backup  => false,
     notify  => Service['tomcat'],
   }
+
 }

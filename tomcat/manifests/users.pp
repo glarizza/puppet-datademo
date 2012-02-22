@@ -9,6 +9,6 @@ class tomcat::users(
     owner  => '0',
     group  => '0',
     mode   => '0644',
-    source => 'puppet:///modules/tomcat/tomcat-users.xml',
+    content => template('tomcat/tomcat-users.erb'),
   }
 }

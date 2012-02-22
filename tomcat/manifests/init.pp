@@ -69,19 +69,11 @@ class tomcat(
 
   file { '/opt/tomcat':
     ensure       => directory,
-    purge        => true,
-    recurse      => true,
-    force        => true,
-    recurselimit => 3,
+    #purge        => true,
+    #recurse      => true,
+    #force        => true,
+    #recurselimit => 3,
     backup       => false,
-  }
-
-  exec { 'tomcat_restart':
-    command     => '/etc/init.d/tomcat stop && sleep 3 && /etc/init.d/tomcat start',
-    path        => '/bin:/sbin:/usr/bin:/usr/sbin',
-    logoutput   => true,
-    refreshonly => true,
-    subscribe   => File['/opt/tomcat'],
   }
 
   file { "/usr/bin/stop_tomcat":
@@ -90,15 +82,24 @@ class tomcat(
     source => 'puppet:///modules/tomcat/stop_tomcat.sh',
   }
 
-  exec { 'stop_tomcat':
-    command     => '/usr/bin/stop_tomcat',
-    refreshonly => true,
-    require     => File['/usr/bin/stop_tomcat'],
+  service { 'tomcat':
+    ensure    => running,
+    enable    => true,
+    hasstatus => true,
+    restart   => '/usr/bin/stop_tomcat && sleep 3 && /etc/init.d/tomcat start',
+    require   => [File['/usr/bin/stop_tomcat'], File['/etc/init.d/tomcat']],
   }
 
-  exec { 'start_tomcat':
-    command     => '/etc/init.d/tomcat start',
-    refreshonly => true,
+  file { '/usr/bin/tomcat-check-script':
+    mode    => '0755',
+    source  => 'puppet:///modules/tomcat/tomcat-check-script',
+    require => Service['tomcat'],
   }
 
+  exec { 'tomcat-check-script':
+    command => '/usr/bin/tomcat-check-script',
+    unless  => '/usr/sbin/lsof -n -i :8080',
+    require => File['/usr/bin/tomcat-check-script'],
+  }
 }
+
